@@ -1,0 +1,30 @@
+@echo off
+echo  Lanceur d'emulateur ume.
+echo Vous serez guide dans la version et le mode de jeu reseau.
+
+SET /P version="ume32 ou ume64?: 32/64? " 
+SET /P server="Entrez l'addresse IP de l'adversaire: "
+IF "%version%"=="64" GOTO UME64
+:UME
+echo vous lancez la version 32 bit.
+cd MAMEHubRepo\Binaries\dist
+SET /P pseudo="Entrez votre pseudo: "
+SET /P mode=" h-heberger ou j-joindre une partie? (h/j?):" 
+SET /P rom="rom a lancer (zipname sans extension -.zip-): "
+IF "%mode%"=="h" (echo creation de la partie
+.\csume "%rom%" -server -port 6805 -username %pseudo%
+)
+ELSE (SET /P hostname="Entrez l'addresse IP de l'Hebergeur"
+.\csume "%rom%" -client -port 6805 -hostname "%server%" -username "%pseudo%"
+)
+ 
+:UME64
+echo Vous lancez la version 64 bit.
+cd MAMEHubRepo\Binaries\dist
+SET /P pseudo="Entrez votre pseudo: "
+SET /P mode=" h-heberger ou j-joindre une partie? (h/j?):" 
+SET /P rom="rom a lancer (zipname sans extension -.zip-): "
+echo creation de la partie
+IF "%mode%"=="h" (.\csume64 "%rom%" -server -port 6805 -username "%pseudo%")ELSE (.\csume64 "%rom%" -client  -hostname "%server%" -port 6805 -username "%pseudo%"
+)
+pause
